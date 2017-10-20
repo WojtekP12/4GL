@@ -1,0 +1,210 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[T1]{polski}
+\usepackage[utf8]{inputenc}
+\newcommand{\BibTeX}{{\sc Bib}\TeX} 
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{listings}
+\usepackage{color}
+
+\lstset{frame=tb,
+language=R,
+keywordstyle=\color{blue},
+alsoletter={.}
+}
+
+\setlength{\textheight}{21cm}
+
+\title{{\bf Zadanie nr 1 - Klasyfikacja}\linebreak
+Programowanie w językach 4GL}
+\author{Izabela Pabich, 220088 \and Wojciech Pełka, Nr albumu}
+\date{data oddania zadania}
+
+\begin{document}
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+\section{Cel zadania}
+
+Celem zadania jest zaimplementowanie w języku R rozwiązania problemu klasyfikacji na wybranym zbiorze danych z dostępnej bazy UCI (odniesienie do biblio). Algorytmem, którego należy użyć do zrealizowania celu jest algorytm k-NN (k najbliższych sąsiadów). \\
+
+\section{Wstęp teoretyczny}
+
+\subsection{Zbiór danych}
+Wybranym przez nas zbiorem jest zbiór do klasyfikacji irysów. W zbiorze dostępne są charakterystyki 3 rodzai kwiatów, gdzie każdy z nich opisany jest czterema wartościami. Plik zawiera 150 rekordów, bo 50 każdego z gatunków irysa. By móc przeprowadzić klasyfikację zbiór należy podzielić na zbiór treningowy oraz testowy. \\
+
+\subsection{Algorytm k-NN}
+Algorytm k-NN, czyli k najbliższych sąsiadów może zostać użyty do problemu klasyfikacji. Rozwiązanie polega na odnalezieniu \textit{k}, gdzie \textit{k} jest liczbą naturalną najczęściej nieparzystą, najmniej oddalonych obiektów dla punktu przeznaczonego do umieszczenia w klasie ~\cite{dowolna_etykieta_ksiazki}). \\
+Metoda początkowo rozmieszcza w przestrzeni wartości zbioru treningowego tworząc bazę według, której będzie umiała przyporządkować kolejne punkty do wydzielonych podzbiorów. Następnie mierząc odległości między punktem testowym a wyznaczoną bazą jest w stanie odnaleźć najbliższe obiekty oraz zakwalifikować wybrane wartości do jednej z klas. W przypadku braku jednoznacznego rozstrzygnięcia przyporządkowanie jest losowe. \\
+Odległość między punktami może być liczona na wiele sposobów. W naszym rozwiązaniu jest to odległość Euklidesowa (odniesienie do biblio). \\
+Na odpowiednie rozmieszczenie obiektów ze zbiorów ma wpływ wiele czynników takich jak: liczba próbek w zbiorze treningowym, liczba \textit{k}, liczba klas do klasyfikacji. Przeprowadzając pewną liczbę eksperymentów będziemy starać się ustalić parametry, które pozwolą na jak najbardziej dokładną klasyfikację.
+
+\newpage
+
+\section{Eksperymenty i wyniki}
+
+Eksperymenty zostały przeprowadzone przez funkcję \textit{knn()} języka R. Przykładowe jej wykorzystynie przedstawia poniższy listing:\\
+{\footnotesize
+\begin{lstlisting}
+iris_pred <- knn(train=iris_data.training, test=iris_data.test, 
+		 cl=iris_data.trainLabels, k=3)
+\end{lstlisting}
+}
+
+Przyjmuję ona kilka parametrów:
+\begin{itemize}
+\item \textit{train} - przyjmuje zbiór danych treningowych
+\item \textit{test} - przyjmuje zbiór danych testowych
+\item \textit{cl} - zawiera zbiór etykiet przypisywanych do wyników klasyfikacji
+\item \textit{k} - określa liczbę najbliższych sąsiadów branych pod uwagę
+\end{itemize}
+
+Do przetestowania metody k-NN klasyfikacji zbioru zostało przygotowanych kilka przypadków testowych, których wyniki przestawione są poniżej. Zmienialiśmy liczność zbiorów treningowych i testowych oraz parametr \textit{k}.
+
+\subsection{Eksperyment nr 1}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 1:
+\begin{itemize}
+\item \textit{k} = \textbf{3}
+\item iris\_data.training = \textbf{108}
+\item iris\_data.test = \textbf{42}
+\end{itemize}
+
+\newpage
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki1}.
+\begin{table}[ht!]
+ \caption{Rezultaty eksperymentu nr 1}
+ \centering
+ \vspace{0.2cm}
+ \begin{tabular}{|c|c|c|c|c|}
+  \hline\\[-0.5cm]
+  \textbf{Rodzaj kwiatu} & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\[0.1cm]
+  \hline
+  \textbf{Setosa} & 13 & 0 & 0 & 13  \\ \hline
+  \textbf{Versicolor} & 0 & 13 & 0 & 13  \\ \hline
+  \textbf{Virginica} & 0 &  1 & 15 & 16  \\ \hline
+  \textbf{Razem} & 13 & 14 & 15 & 42 \\ [0.1cm]
+  \hline
+ \end{tabular}
+ \label{wyniki1}
+\end{table}
+
+\noindent Jak widać w Tab. \ref{wyniki1} wyniki w 97,6\% dają poprawne rezultaty. Maszyna pomyliła się tylko w 1 na 42 przypadki. \newline
+%Graficzna interpretacja wynik�w z Tab. \ref{wyniki eksperymentu pierwszego} 
+%przedstawiona jest na wykresie Rys. \ref{rysunek do eksperymentu pierwszego} gdzie mo�na zauwa�y�, �e...
+%\begin{figure}[h!]
+% \centering
+% \includegraphics[width=9.3cm]{wykres.pdf}
+% \vspace{-0.3cm}
+% \caption{Wykres dla wynik�w eksperymentu pierwszego}
+% \label{rysunek do eksperymentu pierwszego}
+%\end{figure}
+%
+%\noindent Jak wida� z wykresu Rys. \ref{rysunek do eksperymentu pierwszego}...\newline
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PODROZDZIA� PT. EKSPERYMENT NR 2 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\newpage
+%\subsection{Eksperyment nr 2}
+%
+%Eksperyment nr 2 polega� na...\\
+%Sigmoidalna funkcja aktywacji ma posta�:
+%\begin{equation}
+% \forall\: s \in \mathbb{R}\:\:\:\:\:\: f(s) = \frac{1}{\:\:\:1 + e^{-\beta \cdot s}\:}\:,
+% \:\:\:\:\textnormal{gdzie}\:\:\beta \in \mathbb{R}_{+}
+% \label{r�wnanie funkcji sigmoidalnej}
+%\end{equation}
+%Jak wida� z r�wnania definicyjnego (\ref{r�wnanie funkcji sigmoidalnej}) 
+%funkcja\footnote{ang. \textit{sigmoidal function} lub \textit{unipolar function}}
+%ta ma wykres przedstawiony 
+%na rysunku Rys. \ref{funkcja sigmoidalna}, gdzie paramater $\beta$ ...
+%\begin{figure}[h!]
+% \centering
+% \includegraphics[width=7.3cm]{funkcja.png}
+% \vspace{-0.1cm}
+% \caption{Wykres funkcji sigmoidalnej}
+% \label{funkcja sigmoidalna}
+%\end{figure}
+%
+%\subsubsection{Za�o�enia}
+%
+%\subsubsection{Przebieg}
+%
+%\subsubsection{Rezultat}
+%
+%Rezultaty bada� eksperymentalnych przedstawione s� w Tab. \ref{wyniki eksperymentu drugiego}.
+%\vspace{-0.5cm}
+%\begin{table}[h!]
+% \caption{Rezultaty eksperymentu nr 2}
+% \centering
+% \vspace{0.2cm}
+% \begin{tabular}{c c c }
+%  \hline\hline\\[-0.4cm]
+%  \textbf{Przypadek} & \textbf{Metoda 1} & \textbf{Metoda 2}\\[0.1cm]
+%  \hline
+%  \textbf{1} & 50 & 837 \\
+%  \textbf{2} & 47 & 877 \\
+%  \textbf{3} & 45 & 300 \\ [0.1cm]
+%  \hline
+% \end{tabular}
+% \label{wyniki eksperymentu drugiego}
+%\end{table}
+%
+%\noindent Jak wida� w Tab. \ref{wyniki eksperymentu drugiego}...\newline
+%Wyniki w Tab. \ref{wyniki eksperymentu drugiego} �wiadcz� o tym, �e...
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% PODROZDZIA� PT. EKSPERYMENT NR N 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\subsection{Eksperyment nr n}
+%Eksperyment nr n zak�ada�, i�...\\
+%Dla dowolnej liczby $N \in \mathbb{N}$ funkcj� 
+%$F_{N}:\mathbb{C}^{\:N}\!\rightarrow\mathbb{C}^{\:N}$
+%zdefiniowan� w nast�puj�cy spos�b:
+%\vspace{-0.4cm}
+%\begin{equation}
+% \forall\:\mathbf{x} \in \mathbb{C}^{\:N}\:\:\:\:\:
+% \forall\:k \in \{\:0,\dots,N - 1\:\!\}\:\:\:\:\:
+% F_{N}\:\!(\:\mathbf{x}\:)_{k}\:\stackrel{\Delta}{=}\:
+% \frac{1}{\sqrt{N}}\:
+% \sum_{n = 0}^{N - 1}\:x_{n}\:\cdot\:
+% e^{-j 2 \pi n k / N}
+% \label{r�wnanie dyskretnej transformaty Fouriera}
+%\end{equation}
+%nazywamy $N$ -- punktowym prostym jednowymiarowym dyskretnym przekszta�ceniem Fouriera.
+%Na Rys. \ref{FFT} przedstawiono szybki algorytm obliczania dyskretnego 
+%przekszta�cenia Fouriera\footnote{ang. \textit{Fast Fourier Transform}}.
+%\begin{figure}[h!]
+% \centering
+% \includegraphics[width=0.8\linewidth]{transformata.pdf}
+% \vspace{-0.1cm}
+% \caption{Szybkie przekszta�cenie Fouriera}
+% \label{FFT}
+%\end{figure}
+%
+%\subsubsection{Za�o�enia}
+%
+%\subsubsection{Przebieg}
+%
+%\subsubsection{Rezultat}
+%\newpage
+
+\section{Wnioski}
+
+%Wnioski z przeprowadzonych eksperyment�w dowodz�, �e...
+%
+%
+
+\renewcommand\refname{Bibliografia}
+\bibliographystyle{plain}
+\bibliography{bibliografia}
+
+\end{document}
