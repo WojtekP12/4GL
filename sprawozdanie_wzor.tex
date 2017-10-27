@@ -7,6 +7,8 @@
 \usepackage{amsfonts}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{multirow}
+\usepackage{url}
 
 \lstset{frame=tb,
 language=R,
@@ -18,7 +20,7 @@ alsoletter={.}
 
 \title{{\bf Zadanie nr 1 - Klasyfikacja}\linebreak
 Programowanie w językach 4GL}
-\author{Izabela Pabich, 220088 \and Wojciech Pełka, Nr albumu}
+\author{Izabela Pabich, 220088 \and Wojciech Pełka, 220090}
 \date{data oddania zadania}
 
 \begin{document}
@@ -28,17 +30,17 @@ Programowanie w językach 4GL}
 \setcounter{page}{1}
 \section{Cel zadania}
 
-Celem zadania jest zaimplementowanie w języku R rozwiązania problemu klasyfikacji na wybranym zbiorze danych z dostępnej bazy UCI (odniesienie do biblio). Algorytmem, którego należy użyć do zrealizowania celu jest algorytm k-NN (k najbliższych sąsiadów). \\
+Celem zadania jest zaimplementowanie w języku R rozwiązania problemu klasyfikacji na wybranym zbiorze danych z dostępnej bazy UCI \cite{zbiory}. Algorytmem, którego należy użyć do zrealizowania celu jest algorytm k-NN (k najbliższych sąsiadów). \\
 
 \section{Wstęp teoretyczny}
 
 \subsection{Zbiór danych}
-Wybranym przez nas zbiorem jest zbiór do klasyfikacji irysów. W zbiorze dostępne są charakterystyki 3 rodzai kwiatów, gdzie każdy z nich opisany jest czterema wartościami. Plik zawiera 150 rekordów, bo 50 każdego z gatunków irysa. By móc przeprowadzić klasyfikację zbiór należy podzielić na zbiór treningowy oraz testowy. \\
+Wybranym przez nas zbiorem jest zbiór do klasyfikacji irysów. W zbiorze dostępne są charakterystyki 3 rodzai kwiatów, gdzie każdy z nich opisany jest czterema wartościami. Plik zawiera 150 rekordów, po 50 każdego z gatunków irysa. By móc przeprowadzić klasyfikację zbiór należy podzielić na zbiór treningowy oraz testowy. \\
 
 \subsection{Algorytm k-NN}
-Algorytm k-NN, czyli k najbliższych sąsiadów może zostać użyty do problemu klasyfikacji. Rozwiązanie polega na odnalezieniu \textit{k}, gdzie \textit{k} jest liczbą naturalną najczęściej nieparzystą, najmniej oddalonych obiektów dla punktu przeznaczonego do umieszczenia w klasie ~\cite{dowolna_etykieta_ksiazki}). \\
+Algorytm k-NN, czyli k najbliższych sąsiadów może zostać użyty do problemu klasyfikacji. Rozwiązanie polega na odnalezieniu \textit{k}, gdzie \textit{k} jest liczbą naturalną najczęściej nieparzystą, najmniej oddalonych obiektów dla punktu przeznaczonego do umieszczenia w klasie ~\cite{knn}). \\
 Metoda początkowo rozmieszcza w przestrzeni wartości zbioru treningowego tworząc bazę według, której będzie umiała przyporządkować kolejne punkty do wydzielonych podzbiorów. Następnie mierząc odległości między punktem testowym a wyznaczoną bazą jest w stanie odnaleźć najbliższe obiekty oraz zakwalifikować wybrane wartości do jednej z klas. W przypadku braku jednoznacznego rozstrzygnięcia przyporządkowanie jest losowe. \\
-Odległość między punktami może być liczona na wiele sposobów. W naszym rozwiązaniu jest to odległość Euklidesowa (odniesienie do biblio). \\
+Odległość między punktami może być liczona na wiele sposobów. W naszym rozwiązaniu jest to odległość Euklidesowa ~\cite{euklides}. \\
 Na odpowiednie rozmieszczenie obiektów ze zbiorów ma wpływ wiele czynników takich jak: liczba próbek w zbiorze treningowym, liczba \textit{k}, liczba klas do klasyfikacji. Przeprowadzając pewną liczbę eksperymentów będziemy starać się ustalić parametry, które pozwolą na jak najbardziej dokładną klasyfikację.
 
 \newpage
@@ -66,145 +68,317 @@ Do przetestowania metody k-NN klasyfikacji zbioru zostało przygotowanych kilka 
 \subsection{Eksperyment nr 1}
 \subsubsection{Założenia}
 
-Parametry eksperymentu nr 1:
-\begin{itemize}
-\item \textit{k} = \textbf{3}
-\item iris\_data.training = \textbf{108}
-\item iris\_data.test = \textbf{42}
-\end{itemize}
+Parametry eksperymentu nr 1: \textit{k} = \textbf{3}, \textit{iris\_data.training} = \textbf{108}, \\ \textit{iris\_data.test} = \textbf{42}
 
-\newpage
 \subsubsection{Rezultat}
 
 Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki1}.
 \begin{table}[ht!]
- \caption{Rezultaty eksperymentu nr 1}
  \centering
  \vspace{0.2cm}
- \begin{tabular}{|c|c|c|c|c|}
+ \begin{tabular}{|*{5}{c|}}
   \hline\\[-0.5cm]
-  \textbf{Rodzaj kwiatu} & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\[0.1cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
   \hline
-  \textbf{Setosa} & 13 & 0 & 0 & 13  \\ \hline
-  \textbf{Versicolor} & 0 & 13 & 0 & 13  \\ \hline
-  \textbf{Virginica} & 0 &  1 & 15 & 16  \\ \hline
-  \textbf{Razem} & 13 & 14 & 15 & 42 \\ [0.1cm]
+   \textbf{Setosa} & 13 & 0 & 0 & 13  \\ \hline
+   \textbf{Versicolor} & 0 & 13 & 0 & 13  \\ \hline
+   \textbf{Virginica} & 0 &  1 & 15 & 16  \\ \hline
+   \textbf{Razem} & 13 & 14 & 15 & 42 \\
   \hline
  \end{tabular}
+ \caption{Rezultaty eksperymentu nr 1}
  \label{wyniki1}
 \end{table}
 
-\noindent Jak widać w Tab. \ref{wyniki1} wyniki w 97,6\% dają poprawne rezultaty. Maszyna pomyliła się tylko w 1 na 42 przypadki. \newline
-%Graficzna interpretacja wynik�w z Tab. \ref{wyniki eksperymentu pierwszego} 
-%przedstawiona jest na wykresie Rys. \ref{rysunek do eksperymentu pierwszego} gdzie mo�na zauwa�y�, �e...
-%\begin{figure}[h!]
-% \centering
-% \includegraphics[width=9.3cm]{wykres.pdf}
-% \vspace{-0.3cm}
-% \caption{Wykres dla wynik�w eksperymentu pierwszego}
-% \label{rysunek do eksperymentu pierwszego}
-%\end{figure}
-%
-%\noindent Jak wida� z wykresu Rys. \ref{rysunek do eksperymentu pierwszego}...\newline
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% PODROZDZIA� PT. EKSPERYMENT NR 2 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%\newpage
-%\subsection{Eksperyment nr 2}
-%
-%Eksperyment nr 2 polega� na...\\
-%Sigmoidalna funkcja aktywacji ma posta�:
-%\begin{equation}
-% \forall\: s \in \mathbb{R}\:\:\:\:\:\: f(s) = \frac{1}{\:\:\:1 + e^{-\beta \cdot s}\:}\:,
-% \:\:\:\:\textnormal{gdzie}\:\:\beta \in \mathbb{R}_{+}
-% \label{r�wnanie funkcji sigmoidalnej}
-%\end{equation}
-%Jak wida� z r�wnania definicyjnego (\ref{r�wnanie funkcji sigmoidalnej}) 
-%funkcja\footnote{ang. \textit{sigmoidal function} lub \textit{unipolar function}}
-%ta ma wykres przedstawiony 
-%na rysunku Rys. \ref{funkcja sigmoidalna}, gdzie paramater $\beta$ ...
-%\begin{figure}[h!]
-% \centering
-% \includegraphics[width=7.3cm]{funkcja.png}
-% \vspace{-0.1cm}
-% \caption{Wykres funkcji sigmoidalnej}
-% \label{funkcja sigmoidalna}
-%\end{figure}
-%
-%\subsubsection{Za�o�enia}
-%
-%\subsubsection{Przebieg}
-%
-%\subsubsection{Rezultat}
-%
-%Rezultaty bada� eksperymentalnych przedstawione s� w Tab. \ref{wyniki eksperymentu drugiego}.
-%\vspace{-0.5cm}
-%\begin{table}[h!]
-% \caption{Rezultaty eksperymentu nr 2}
-% \centering
-% \vspace{0.2cm}
-% \begin{tabular}{c c c }
-%  \hline\hline\\[-0.4cm]
-%  \textbf{Przypadek} & \textbf{Metoda 1} & \textbf{Metoda 2}\\[0.1cm]
-%  \hline
-%  \textbf{1} & 50 & 837 \\
-%  \textbf{2} & 47 & 877 \\
-%  \textbf{3} & 45 & 300 \\ [0.1cm]
-%  \hline
-% \end{tabular}
-% \label{wyniki eksperymentu drugiego}
-%\end{table}
-%
-%\noindent Jak wida� w Tab. \ref{wyniki eksperymentu drugiego}...\newline
-%Wyniki w Tab. \ref{wyniki eksperymentu drugiego} �wiadcz� o tym, �e...
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% PODROZDZIA� PT. EKSPERYMENT NR N 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%\subsection{Eksperyment nr n}
-%Eksperyment nr n zak�ada�, i�...\\
-%Dla dowolnej liczby $N \in \mathbb{N}$ funkcj� 
-%$F_{N}:\mathbb{C}^{\:N}\!\rightarrow\mathbb{C}^{\:N}$
-%zdefiniowan� w nast�puj�cy spos�b:
-%\vspace{-0.4cm}
-%\begin{equation}
-% \forall\:\mathbf{x} \in \mathbb{C}^{\:N}\:\:\:\:\:
-% \forall\:k \in \{\:0,\dots,N - 1\:\!\}\:\:\:\:\:
-% F_{N}\:\!(\:\mathbf{x}\:)_{k}\:\stackrel{\Delta}{=}\:
-% \frac{1}{\sqrt{N}}\:
-% \sum_{n = 0}^{N - 1}\:x_{n}\:\cdot\:
-% e^{-j 2 \pi n k / N}
-% \label{r�wnanie dyskretnej transformaty Fouriera}
-%\end{equation}
-%nazywamy $N$ -- punktowym prostym jednowymiarowym dyskretnym przekszta�ceniem Fouriera.
-%Na Rys. \ref{FFT} przedstawiono szybki algorytm obliczania dyskretnego 
-%przekszta�cenia Fouriera\footnote{ang. \textit{Fast Fourier Transform}}.
-%\begin{figure}[h!]
-% \centering
-% \includegraphics[width=0.8\linewidth]{transformata.pdf}
-% \vspace{-0.1cm}
-% \caption{Szybkie przekszta�cenie Fouriera}
-% \label{FFT}
-%\end{figure}
-%
-%\subsubsection{Za�o�enia}
-%
-%\subsubsection{Przebieg}
-%
-%\subsubsection{Rezultat}
-%\newpage
+\noindent Jak widać w Tab. \ref{wyniki1} wyniki są 97,6\% poprawne. Maszyna pomyliła się tylko w 1 na 42 przypadki. \newline
+
+\subsection{Eksperyment nr 2}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 2: \textit{k} = \textbf{7}, \textit{iris\_data.training} = \textbf{108}, \\ \textit{iris\_data.test} = \textbf{42}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki2}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 13 & 0 & 0 & 13  \\ \hline
+   \textbf{Versicolor} & 0 & 13 & 0 & 13  \\ \hline
+   \textbf{Virginica} & 0 &  0 & 16 & 16  \\ \hline
+   \textbf{Razem} & 13 & 13 & 16 & 42 \\
+  \hline
+ \end{tabular} 
+ \caption{Rezultaty eksperymentu nr 2}
+ \label{wyniki2}
+\end{table}
+
+\noindent W Tab. \ref{wyniki2} widać wyniki drugiego eksperymentu, które są bezbłędne. Kwiaty zostały w 100\% poprawnie rozpoznane. \newline
+
+\subsection{Eksperyment nr 3}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 3: \textit{k} = \textbf{13}, \textit{iris\_data.training} = \textbf{108}, \\ \textit{iris\_data.test} = \textbf{42}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki3}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 13 & 0 & 0 & 13  \\ \hline
+   \textbf{Versicolor} & 0 & 13 & 0 & 13  \\ \hline
+   \textbf{Virginica} & 0 &  1 & 15 & 16  \\ \hline
+   \textbf{Razem} & 13 & 14 & 15 & 42 \\
+  \hline
+ \end{tabular}
+ \caption{Rezultaty eksperymentu nr 3}
+ \label{wyniki3}
+\end{table}
+
+\noindent Rezultaty eksperymentu nr 3 widoczne w Tab. \ref{wyniki3} mają poprawność rzędu 97,5\% tak jak w doświadczeniu nr 1. Można pomyśleć, że wybrana liczba \textit{k} jest już zbyt wysoka, by dane były poprawnie rozpoznawane.\newline
+
+\subsection{Eksperyment nr 4}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 4: \textit{k} = \textbf{27}, \textit{iris\_data.training} = \textbf{108}, \\ \textit{iris\_data.test} = \textbf{42}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki4}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 13 & 0 & 0 & 13  \\ \hline
+   \textbf{Versicolor} & 0 & 13 & 0 & 13  \\ \hline
+   \textbf{Virginica} & 0 &  3 & 13 & 16  \\ \hline
+   \textbf{Razem} & 13 & 16 & 13 & 42 \\
+  \hline
+ \end{tabular}
+ \caption{Rezultaty eksperymentu nr 4}
+ \label{wyniki4}
+\end{table}
+
+\noindent Jak widać w Tab. \ref{wyniki4} wyniki są coraz gorsze. Rozpoznanie kwiatów jest na poziomie 92,8\%.\newline
+
+\subsection{Eksperyment nr 5}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 5: \textit{k} = \textbf{39}, \textit{iris\_data.training} = \textbf{108}, \\ \textit{iris\_data.test} = \textbf{42}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki5}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 13 & 0 & 0 & 13  \\ \hline
+   \textbf{Versicolor} & 0 & 12 & 1 & 13  \\ \hline
+   \textbf{Virginica} & 0 &  4 & 12 & 16  \\ \hline
+   \textbf{Razem} & 13 & 16 & 13 & 42 \\
+  \hline
+ \end{tabular}
+ \caption{Rezultaty eksperymentu nr 5}
+ \label{wyniki5}
+\end{table}
+
+\noindent Kolejny eksperyment został przeprowadzony dla jeszcze większej wartości parametru \textit{k} i sprawdza się przypuszczenie z wcześniejszych iteracji. Poprawność przypisania klasy jest już tylko w 88,1\%. \newline
+
+\subsection{Eksperyment nr 6}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 6: \textit{k} = \textbf{67}, \textit{iris\_data.training} = \textbf{108}, \\ \textit{iris\_data.test} = \textbf{42}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki6}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 13 & 0 & 0 & 13  \\ \hline
+   \textbf{Versicolor} & 0 & 13 & 0 & 13  \\ \hline
+   \textbf{Virginica} & 0 &  8 & 8 & 16  \\ \hline
+   \textbf{Razem} & 13 & 21 & 18 & 42 \\
+  \hline
+ \end{tabular}
+ \caption{Rezultaty eksperymentu nr 6}
+ \label{wyniki6}
+\end{table}
+
+\noindent Potwierdzenie wniosków z poprzednich eksperymentów widać także w Tab. \ref{wyniki6}, skuteczność wynosi 80,9\%. \newline
+
+\subsection{Eksperyment nr 7}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 7: \textit{k} = \textbf{1}, \textit{iris\_data.training} = \textbf{42}, \\ \textit{iris\_data.test} = \textbf{108}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki7}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 37 & 0 & 0 & 37  \\ \hline
+   \textbf{Versicolor} & 0 & 34 & 3 & 37  \\ \hline
+   \textbf{Virginica} & 0 &  1 & 33 & 34  \\ \hline
+   \textbf{Razem} & 37 & 35 & 36 & 108 \\
+  \hline
+ \end{tabular}
+ \caption{Rezultaty eksperymentu nr 7}
+ \label{wyniki7}
+\end{table}
+
+\noindent Jak widać w Tab. \ref{wyniki7} wyniki nie są idealne, skuteczność sięga 96,3\%. \newline
+
+\subsection{Eksperyment nr 8}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 8: \textit{k} = \textbf{3}, \textit{iris\_data.training} = \textbf{42}, \\ \textit{iris\_data.test} = \textbf{108}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki8}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 37 & 0 & 0 & 37  \\ \hline
+   \textbf{Versicolor} & 0 & 33 & 4 & 37  \\ \hline
+   \textbf{Virginica} & 0 &  1 & 33 & 34  \\ \hline
+   \textbf{Razem} & 37 & 34 & 37 & 108 \\
+  \hline
+ \end{tabular}
+ \caption{Rezultaty eksperymentu nr 8}
+ \label{wyniki8}
+\end{table}
+
+\noindent Jak widać w Tab. \ref{wyniki8} wyniki wraz wzrostem współczynnika \textit{k} pogarszają się, poprawnych dopasowań jest 95,4\%. \newline
+
+\subsection{Eksperyment nr 9}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 9: \textit{k} = \textbf{7}, \textit{iris\_data.training} = \textbf{42}, \\ \textit{iris\_data.test} = \textbf{108}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki9}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 37 & 0 & 0 & 37  \\ \hline
+   \textbf{Versicolor} & 0 & 32 & 5 & 37  \\ \hline
+   \textbf{Virginica} & 0 &  1 & 33 & 34  \\ \hline
+   \textbf{Razem} & 37 & 33 & 38 & 108 \\
+  \hline
+ \end{tabular}
+ \caption{Rezultaty eksperymentu nr 9}
+ \label{wyniki9}
+\end{table}
+
+\noindent Dla kolejnych wyników widocznych w Tab. \ref{wyniki9} stopniowo skuteczność spada, w tym przypadku wynosi już 94,4\%. \newline
+
+\subsection{Eksperyment nr 10}
+\subsubsection{Założenia}
+
+Parametry eksperymentu nr 10: \textit{k} = \textbf{17}, \textit{iris\_data.training} = \textbf{42}, \\ \textit{iris\_data.test} = \textbf{108}
+
+\subsubsection{Rezultat}
+
+Rezultaty badań eksperymentalnych przedstawione są w Tab. \ref{wyniki10}.
+\begin{table}[ht!]
+ \centering
+ \vspace{0.2cm}
+  \begin{tabular}{|*{5}{c|}}
+  \hline\\[-0.5cm]
+   \multirow{2}{*}{Dane testowe} & \multicolumn{4}{c|}{Predykcje maszyny} \\ \cline{2-5}
+   & \textbf{Setosa} & \textbf{Versicolor} & \textbf{Virginica} & \textbf{Razem}\\
+  \hline
+   \textbf{Setosa} & 37 & 0 & 0 & 37  \\ \hline
+   \textbf{Versicolor} & 0 & 25 & 12 & 37  \\ \hline
+   \textbf{Virginica} & 0 &  1 & 33 & 34  \\ \hline
+   \textbf{Razem} & 37 & 26 & 45 & 108 \\
+  \hline
+ \end{tabular}
+ \caption{Rezultaty eksperymentu nr 10}
+ \label{wyniki10}
+\end{table}
+
+\noindent Dla tak dużej wartości parametru wyniki są niezadowalające, poprawność wynosi 87,9\%.\newline
+
+\subsection{Wykres skuteczności od współczynnika \textit{k} dla zbioru podzielonego w stosunku 2:1}
+Na rysunku \ref{wykres_k} przedstawiona jest skuteczność klasyfikacji w \% do wybranego współczynnika \textit{k}.
+\begin{figure}[h!]
+ \centering
+ \includegraphics[scale=0.4]{R_knn.png}
+ \vspace{-0.1cm}
+ \caption{Skuteczność klasyfikacji w \%}
+ \label{wykres_k}
+\end{figure}
 
 \section{Wnioski}
+Poniżej zebrano wnioski wyciągnięte po przedyskutowaniu dokonanych badań. \\
 
-%Wnioski z przeprowadzonych eksperyment�w dowodz�, �e...
-%
-%
+\begin{itemize}
+\item{Procent poprawności przewidzenia wyniku dla kolejnej próbki ze zbioru testowego silnie zależy od liczebności zbioru treningowego.}
+\item{Zestawie całości zbioru w stosunku 2/3 treningowy, 1/3 testowy dało znacznie lepsze rezultaty od eksperymentów, w których ten stosunek był zamieniony.}
+\item{Zbyt mały zbiór danych treningowych może nigdy "nie nauczyć" klasyfikatora rezultatów, których byśmy oczekiwali.}
+\item{Jeden z gatunków kwiatów był mocno oddzielony od pozostałych we wszystkich czterech cechach co spowodowało, że algorytm nie miał problemów z jego rozpoznaniem.}
+\item{Pozostałe dwa gatunki irysów miały wartości cech bardziej do siebie zbliżone i wtedy wartość współczynnika \textit{k} miała duże znaczenie przy klasyfikacji.}
+\item{Współczynnik \textit{k}, czyli ilość najbliższych sąsiadów branych pod uwagę w wyborze klasy próbki, ma bardzo duży wpływ na ogólny wynik.}
+\item{Zbyt niska wartość \textit{k} powoduje brak szerszego spojrzenia na otoczenia próbki, co może spowodować przypadkowe przypisanie.}
+\item{Zbyt duża wartość \textit{k} może doprowadzić do głosowania wśród większości zbioru testowego i tak naprawdę przekłamywać wynik.}
+\item{Bardzo ważne jest wyważenie ilości prób, tak by nie zatrzymać się przy wyniku być może nie dość zadowalającym. Warto jest sprawdzić więcej możliwości niż mniej by mieć większy zbiór danych do analizy.}
+\end{itemize}
 
-\renewcommand\refname{Bibliografia}
-\bibliographystyle{plain}
-\bibliography{bibliografia}
+\addcontentsline{toc}{chapter}{Bibliografia} 
+\begin{thebibliography}{99}
+\bibitem{zbiory}
+Zbiory danych \url{http://archive.ics.uci.edu/ml/}
+\bibitem{knn}
+Algorytm k-NN \url{http://edu.pjwstk.edu.pl/wyklady/adn/scb/wyklad9/w9.htm}
+\bibitem{euklides}
+Odległość euklidesowa \url{http://zsi.tech.us.edu.pl/~nowak/ed/PED_kNN.pdf} slajd 8
 
+
+\end{thebibliography}
 \end{document}
